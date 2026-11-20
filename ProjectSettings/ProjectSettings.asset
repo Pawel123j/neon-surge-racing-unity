@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!129 &1
+PlayerSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 28
+  productGUID: 1018d3801438485d893dcc070753348d
+  companyName: Neon Arcade
+  productName: Neon Surge
+  defaultScreenOrientation: 4
+  defaultIsNativeResolution: 1
+  defaultScreenWidth: 1440
+  defaultScreenHeight: 900
+  runInBackground: 1
+  allowFullscreenSwitch: 1
+  resizableWindow: 1
+  usePlayerLog: 1
+  fullscreenMode: 1
+  visibleInBackground: 1
+  activeInputHandler: 0
+  apiCompatibilityLevelPerPlatform: {}
+  scriptingBackend:
+    Standalone: 0
+    Android: 1
+  il2cppCompilerConfiguration:
+    Standalone: 0
+  managedStrippingLevel:
+    Standalone: 0
+  scriptingDefineSymbols: {}
+  additionalCompilerArguments: {}
+  suppressCommonWarnings: 1
+  allowUnsafeCode: 0
+  useDeterministicCompilation: 1
+  gcIncremental: 1
+  gcWBarrierValidation: 0
+  applicationIdentifier:
+    Standalone: com.neonarcade.neonsurge
+  bundleVersion: 1.0.0
+  AndroidBundleVersionCode: 1
+  iPhoneBuildNumber: 1
+  companyDomain: com.neonarcade
+  androidMinSdkVersion: 23
+  AndroidTargetArchitectures: 2
+  virtualRealitySupported: 0
+  switchNetLibKey:
+  ps4NPAgeRating: 12
+  ps4ParamSfxPath:
+  ps4pnSessions: 1
+  ps4moveSupport: 1
+  ps4disableAutoHideCursor: 0
+  xboxOneResolution: 0

@@ -1,0 +1,49 @@
+name: Unity project integrity (static)
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  structure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Unity metadata, references and package manifest
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          root = Path("Assets")
+          assert root.is_dir(), "Assets/ directory missing"
+          assert Path("Assets.meta").is_file(), "Assets folder metadata missing"
+          guids = {}
+          for path in [Path("Assets.meta"), *sorted(root.rglob("*.meta"))]:
+              text = path.read_text(encoding="utf-8")
+              m = re.search(r"(?m)^guid: ([a-f0-9]{32})$", text)
+              assert m is not None, f"Invalid GUID metadata: {path}"
+              assert m.group(1) not in guids, f"Duplicate GUID: {guids.get(m.group(1))} and {path}"
+              guids[m.group(1)] = path
+          for path in root.rglob("*"):
+              if path.is_file() and not path.name.endswith(".meta"):
+                  assert Path(str(path) + ".meta").is_file(), f"Missing .meta: {path}"
+              if path.is_dir():
+                  assert Path(str(path) + ".meta").is_file(), f"Missing folder .meta: {path}"
+
+          manifest = json.loads(Path("Packages/manifest.json").read_text(encoding="utf-8"))
+          assert "dependencies" in manifest, "Unity package manifest missing dependencies"
+          json.loads(Path("Packages/packages-lock.json").read_text(encoding="utf-8"))
+          settings = Path("ProjectSettings/EditorBuildSettings.asset").read_text(encoding="utf-8")
+          assert "Assets/Scenes/NeonSurge.unity" in settings, "Bootstrap scene is not registered"
+          for name in ("RaceProgress.cs", "GameBootstrap.cs", "RaceProgressTests.cs"):
+              assert list(root.rglob(name)), f"Required source missing: {name}"
+
+          print(f"Static Unity integrity PASS ({len(guids)} GUIDs checked).")
+          print("Unity Editor imports, PlayMode/EditMode tests, and platform builds are NOT validated here.")
+          PY
